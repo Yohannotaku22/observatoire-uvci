@@ -604,35 +604,52 @@
 
                 pointToLayer: function (f, latlng) { return L.marker(latlng, { icon: iconNorm }); },
 
-                onEachFeature: function (f, layer) {
+               onEachFeature: function (f, layer) {
+    var p = f.properties;
+    var photo = p.photo_1 || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+    var vNom = (p.ville || "").toUpperCase();
+    var villeTxt = (vNom === "AUTRE") ? (p.ville_1 || "AUTRE") : vNom;
+    var communeTxt = (vNom === "ABIDJAN") ? `<b>🏠 Commune:</b> ${p.commune || '-'}<br>` : "";
 
-                    var p = f.properties;
+    // Le lien Email avec mailto
+    var emailLien = `<a href="mailto:${p.email}" style="color:var(--uvci-purple); font-weight:bold; text-decoration:none;">${p.email || '-'}</a>`;
 
-                    var photo = p.photo_1 || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+    var content = `
+        <div class="popup-box">
+            <img src="${photo}" class="img-round">
+            <div style="font-weight:bold; color:var(--uvci-purple);">${p.nom}</div>
+            <div class="popup-info">
+                <b>🎓 Niveau:</b> ${p.niveau || '-'}<br>
+                <b>📚 Spécialité:</b> ${p.specialite || '-'}<br>
+                <b>📧 Email:</b> ${emailLien}<br>
+                <b>📍 Ville:</b> ${villeTxt}<br>
+                ${communeTxt}
+                <b>🗺️ Quartier:</b> ${p.quartier || '-'}
+            </div>
+        </div>`;
 
+    // On lie le popup au marqueur
+    layer.bindPopup(content);
 
+    // ÉVÉNEMENT 1 : Au survol, on ouvre le popup
+    layer.on('mouseover', function (e) {
+        this.setIcon(iconSel);
+        this.openPopup();
+    });
 
-                    var vNom = (p.ville || "").toUpperCase();
+    // ÉVÉNEMENT 2 : Au clic, on "fixe" le popup (comportement par défaut)
+    layer.on('click', function (e) {
+        this.setIcon(iconSel);
+        this.openPopup();
+    });
 
-                    var villeTxt = (vNom === "AUTRE") ? (p.ville_1 || "AUTRE") : vNom;
-
-                    var communeTxt = (vNom === "ABIDJAN") ? `<b>🏠 Commune:</b> ${p.commune || '-'}<br>` : "";
-
-
-
-                 var content = `
-                    <div class="popup-box">
-                        <img src="${photo}" class="img-round">
-                        <div style="font-weight:bold; color:var(--uvci-purple);">${p.nom}</div>
-                        <div class="popup-info">
-                            <b>🎓 Niveau:</b> ${p.niveau || '-'}<br>
-                            <b>📚 Spécialité:</b> ${p.specialite || '-'}<br>
-                            <b>📧 Email:</b> <span style="color:var(--uvci-purple)">${p.email || '-'}</span><br>
-                            <b>📍 Ville:</b> ${villeTxt}<br>
-                            ${communeTxt}
-                            <b>🗺️ Quartier:</b> ${p.quartier || '-'}
-                        </div>
-                    </div>`;
+    // ÉVÉNEMENT 3 : Quand la souris quitte le point
+    // On retire le "closePopup()" pour que le popup reste ouvert et qu'on puisse cliquer sur l'email
+    layer.on('mouseout', function (e) {
+        this.setIcon(iconNorm);
+        // On ne met rien ici pour laisser le popup affiché
+    });
+}
 
 
 
@@ -720,4 +737,5 @@
 
 
 </html>
+
 
