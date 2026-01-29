@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UVCI Connect - Observatoire de la Présence Universitaire</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -48,17 +49,38 @@
             display: flex;
             flex: 1;
             overflow: hidden;
+            flex-direction: row; /* Par défaut : côte à côte */
         }
 
-        /* SIDEBAR GAUCHE */
-        .sidebar-left {
-            width: 320px;
-            background: white;
-            border-right: 1px solid #eee;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            overflow-y: auto;
+        /* Quand l'écran est petit (téléphone) */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column; /* On empile tout verticalement */
+                overflow-y: auto;
+            }
+            
+            .sidebar-left, .sidebar-right {
+                width: 100% !important; /* Prend toute la largeur */
+                border: none;
+                overflow: visible;
+            }
+
+            #map {
+                height: 400px; /* On donne une hauteur fixe à la carte sur mobile */
+                flex: none;
+                width: 100%;
+            }
+            
+            header {
+                height: auto;
+                padding: 10px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-logo {
+                margin-top: 10px;
+            }
         }
 
         .card {
@@ -97,18 +119,7 @@
             filter: grayscale(0.2) brightness(1.05) contrast(1.1);
         }
 
-        /* SIDEBAR DROITE */
-        .sidebar-right {
-            width: 280px;
-            background: white;
-            border-left: 1px solid #eee;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            /* Aligne le contenu en haut et en bas */
-        }
-
+      
 
         .legend-item {
             display: flex;
@@ -434,3 +445,4 @@
 
 
 </html>
+
