@@ -8,232 +8,126 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --uvci-purple: #7F00FF;
-            --uvci-green: #2ecc71;
-        }
+  <style>
+    :root {
+        --uvci-purple: #6a1b9a;
+    }
 
-        body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            font-family: 'Segoe UI', sans-serif;
-            background: #fdfdfd;
-        }
+    body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        font-family: 'Segoe UI', sans-serif;
+        background: #fdfdfd;
+        overflow: hidden; /* Empêche le scroll global sur PC */
+    }
 
-        /* HEADER */
+    /* --- HEADER --- */
+    header {
+        height: 70px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 2000;
+        flex-shrink: 0;
+    }
+
+    .header-title {
+        color: var(--uvci-purple);
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .header-logo {
+        height: 50px;
+    }
+
+    /* --- STRUCTURE PRINCIPALE --- */
+    .main-container {
+        display: flex;
+        flex: 1;
+        overflow: hidden; /* Important pour le scroll des barres latérales */
+    }
+
+    .sidebar-left, .sidebar-right {
+        width: 320px;
+        background: white;
+        border-right: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        padding: 25px;
+        overflow-y: auto; /* Faire réapparaître le scroll */
+        height: 100%;
+    }
+
+    .sidebar-right {
+        border-right: none;
+        border-left: 1px solid #eee;
+    }
+
+    #map {
+        flex: 1;
+        z-index: 1;
+    }
+
+    /* --- ELEMENTS DE UI --- */
+    .card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .card h3 {
+        margin: 0 0 10px 0;
+        font-size: 13px;
+        color: var(--uvci-purple);
+        text-transform: uppercase;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 5px;
+    }
+
+    /* --- MODE SOMBRE --- */
+    body.dark-mode { background: #1a1a1a; color: #ffffff; }
+    .dark-mode header, .dark-mode .sidebar-left, .dark-mode .sidebar-right, .dark-mode .card {
+        background: #252525; color: #ffffff; border-color: #333;
+    }
+    .dark-mode .leaflet-tile-container { filter: invert(100%) hue-rotate(180deg) brightness(95%); }
+
+    /* --- ADAPTATION MOBILE (MEDIA QUERY) --- */
+    @media (max-width: 768px) {
+        body { overflow: auto; } /* Autorise le scroll global sur mobile */
+        
         header {
-            height: 70px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 2000;
-        }
-
-        .header-title {
-            color: var(--uvci-purple);
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .header-logo {
-            height: 50px;
-        }
-
-        .main-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* SIDEBAR GAUCHE */
-        .sidebar-left {
-            width: 320px;
-            background: white;
-            border-right: 1px solid #eee;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-
-        /* Quand l'écran est petit (téléphone) */
-     /* --- CORRECTIONS POUR ORDINATEUR --- */
-        .main-container {
-            display: flex;
-            flex: 1;
-            height: calc(100vh - 70px); /* Fixe la hauteur pour forcer le scroll interne */
-            overflow: hidden;
-        }
-
-        .sidebar-left, .sidebar-right {
-            width: 320px; /* On redonne la largeur d'origine */
-            background: white;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto; /* LA BARRE DE DÉFILEMENT REVIENT ICI */
-            height: 100%;
-        }
-
-        /* --- AJUSTEMENT MOBILE SÉCURISÉ --- */
-        @media (max-width: 768px) {
-            .main-container {
-                display: block !important;
-                height: auto !important;
-                overflow-y: visible !important;
-            }
-            
-            .sidebar-left, .sidebar-right {
-                width: 100% !important;
-                height: auto !important;
-                overflow-y: visible !important;
-                padding: 15px; /* Padding réduit uniquement sur mobile */
-            }
-
-            #map {
-                height: 450px !important;
-                width: 100% !important;
-            }
-        }
-  
-}
-
-            .header-logo {
-                margin-top: 10px;
-            }
-        }
-
-        .card {
-            background: #fff;
-            border: 1px solid #eee;
-            border-radius: 8px;
+            height: auto;
             padding: 15px;
-            margin-bottom: 20px;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .card h3 {
-            margin: 0 0 10px 0;
-            font-size: 13px;
-            color: var(--uvci-purple);
-            text-transform: uppercase;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 5px;
-        }
-
-        /* FILTRE NIVEAU */
-        .filter-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px;
-            font-size: 12px;
-        }
-
-        /* CARTE & DESIGN */
-        #map {
-            flex: 1;
-            z-index: 1;
-            background: #f0f4f0;
-        }
-
-        .leaflet-tile-container {
-            filter: grayscale(0.2) brightness(1.05) contrast(1.1);
-        }
-
-      
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 13px;
-        }
-
-        .legend-icon {
-            width: 14px;
-            height: 14px;
-            margin-right: 10px;
-            border-radius: 50%;
-        }
-
-        /* POPUP STYLE */
-        .popup-box {
-            width: 220px;
-            text-align: center;
-        }
-
-        .img-round {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 3px solid var(--uvci-purple);
-            object-fit: cover;
-            margin: 0 auto 10px;
+        .main-container {
+            flex-direction: column;
+            height: auto;
             display: block;
         }
 
-        .popup-info {
-            text-align: left;
-            font-size: 11px;
-            line-height: 1.4;
-            color: #444;
-            border-top: 1px solid #eee;
-            padding-top: 8px;
+        .sidebar-left, .sidebar-right {
+            width: 100% !important;
+            height: auto;
+            overflow: visible;
         }
 
-        .btn-export {
+        #map {
+            height: 400px !important;
             width: 100%;
-            padding: 10px;
-            background: #f8f8f8;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #555;
-            transition: 0.3s;
         }
-
-        .btn-export:hover {
-            background: var(--uvci-purple);
-            color: white;
-        }
-
-        /* Couleurs du Mode Sombre */
-        body.dark-mode {
-            background: #1a1a1a;
-            color: #ffffff;
-        }
-
-        .dark-mode header,
-        .dark-mode .sidebar-left,
-        .dark-mode .sidebar-right,
-        .dark-mode .card {
-            background: #252525;
-            color: #ffffff;
-            border-color: #333;
-        }
-
-        .dark-mode .header-title span {
-            color: #bbb !important;
-        }
-
-        .dark-mode .btn-export {
-            background: #333;
-            color: #eee;
-            border-color: #444;
-        }
-
-        /* Inverser les couleurs de la carte pour le mode nuit */
-        .dark-mode .leaflet-tile-container {
-            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>
@@ -472,6 +366,7 @@
 
 
 </html>
+
 
 
 
