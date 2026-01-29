@@ -591,56 +591,33 @@
         }
 
 function afficher(data) {
-    if (geojsonLayer) map.removeLayer(geojsonLayer);
-    
-    geojsonLayer = L.geoJSON(data, {
-        pointToLayer: function(f, latlng) {
-            return L.marker(latlng, { icon: iconNorm });
-        },
-        onEachFeature: function(f, layer) {
-            var p = f.properties;
-            var photo = p.photo_1 || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-            
-            // Gestion de la ville et commune
-            var vNom = (p.ville || "").toUpperCase();
-            var villeTxt = (vNom === "AUTRE") ? (p.ville_1 || "AUTRE") : vNom;
-            var communeTxt = (vNom === "ABIDJAN") ? "<b>🏠 Commune:</b> " + (p.commune || '-') + "<br>" : "";
+            if (geojsonLayer) map.removeLayer(geojsonLayer);
+            initStats(data.features);
+            geojsonLayer = L.geoJSON(data, {
+                pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconNorm }),
+                onEachFeature: (f, layer) => {
+                    var p = f.properties;
+                    var photo = p.photo_1 || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+                    var vNom = (p.ville || "").toUpperCase();
+                    var villeTxt = (vNom === "AUTRE") ? (p.ville_1 || "AUTRE") : vNom;
+                    var communeTxt = (vNom === "ABIDJAN") ? `<b>🏠 Commune:</b> ${p.commune || '-'}<br>` : "";
 
-            // Le lien Email cliquable (Mailto)
-            var emailLien = p.email ? `<a href="mailto:${p.email}" style="color:#7F00FF; font-weight:bold; text-decoration:underline;">${p.email}</a>` : '-';
-
-            var content = `
-                <div class="popup-box" style="text-align:center;">
-                    <img src="${photo}" class="img-round" style="width:80px; height:80px; border-radius:50%; border:2px solid #7F00FF; object-fit:cover;">
-                    <div style="font-weight:bold; color:#7F00FF; margin-top:5px;">${p.nom}</div>
-                    <div class="popup-info" style="text-align:left; font-size:12px; margin-top:8px; border-top:1px solid #eee; padding-top:5px;">
-                        <b>🎓 Niveau:</b> ${p.niveau || '-'}<br>
-                        <b>📚 Spécialité:</b> ${p.specialite || '-'}<br>
-                        <b>📧 Email:</b> ${emailLien}<br>
-                        <b>📍 Ville:</b> ${villeTxt}<br>
-                        ${communeTxt}
-                        <b>🗺️ Quartier:</b> ${p.quartier || '-'}
-                    </div>
-                </div>`;
-
-            layer.bindPopup(content);
-
-            // GESTION SURVOL + CLIC
-            layer.on('mouseover', function() {
-                this.setIcon(iconSel);
-                this.openPopup(); // S'ouvre au survol
-            });
-
-            layer.on('click', function() {
-                this.setIcon(iconSel);
-                this.openPopup(); // Reste ouvert au clic
-            });
-
-            layer.on('mouseout', function() {
-                this.setIcon(iconNorm);
-                // ON NE FERME PAS le popup ici pour laisser l'utilisateur cliquer sur l'email
-            });
-        }
+                    var content = `<div class="popup-box">
+                        <img src="${photo}" class="img-round">
+                        <div style="font-weight:bold; color:var(--uvci-purple);">${p.nom}</div>
+                        <div class="popup-info">
+                            <b>🎓 Niveau:</b> ${p.niveau || '-'}<br>
+                            <b>📚 Spécialité:</b> ${p.specialite || '-'}<br>
+                            <b>📧 Email:</b> <span style="color:var(--uvci-purple)">${p.email || '-'}</span><br>
+                            <b>📍 Ville:</b> ${villeTxt}<br>
+                            ${communeTxt}
+                            <b>🗺️ Quartier:</b> ${p.quartier || '-'}
+                        </div>
+                    </div>`;
+                    layer.bindPopup(content, { closeButton: false });
+                    layer.on('mouseover', function () { this.setIcon(iconSel); this.openPopup(); });
+                    layer.on('mouseout', function () { this.setIcon(iconNorm); this.closePopup(); });
+                }
     }).addTo(map);
 }
 
@@ -732,6 +709,7 @@ function afficher(data) {
 
 
 </html>
+
 
 
 
