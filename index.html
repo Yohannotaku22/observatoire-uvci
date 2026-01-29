@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UVCI Connect - Observatoire de la Présence Universitaire</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -44,22 +45,41 @@
             height: 50px;
         }
 
-        .main-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
+    
+@media (max-width: 768px) {
+    /* On empile les colonnes verticalement */
+    .main-container {
+        flex-direction: column !important;
+        overflow-y: auto !important;
+        display: block !important; /* Force l'empilement */
+    }
 
-        /* SIDEBAR GAUCHE */
-        .sidebar-left {
-            width: 320px;
-            background: white;
-            border-right: 1px solid #eee;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            overflow-y: auto;
-        }
+    /* On force la carte à avoir une hauteur sur mobile */
+    #map {
+        height: 450px !important; /* Hauteur minimale pour voir la carte */
+        width: 100% !important;
+        order: 2; /* Place la carte après les filtres */
+    }
+
+    .sidebar-left {
+        width: 100% !important;
+        height: auto !important;
+        order: 1; /* Filtres en premier */
+    }
+
+    .sidebar-right {
+        width: 100% !important;
+        height: auto !important;
+        order: 3; /* Légende et carte CI en dernier */
+    }
+
+    header {
+        flex-direction: column !important;
+        height: auto !important;
+        text-align: center;
+    }
+}
+        
 
         .card {
             background: #fff;
@@ -97,17 +117,7 @@
             filter: grayscale(0.2) brightness(1.05) contrast(1.1);
         }
 
-        /* SIDEBAR DROITE */
-        .sidebar-right {
-            width: 280px;
-            background: white;
-            border-left: 1px solid #eee;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            /* Aligne le contenu en haut et en bas */
-        }
+        
 
 
         .legend-item {
@@ -165,16 +175,15 @@
             background: var(--uvci-purple);
             color: white;
         }
-
         /* Couleurs du Mode Sombre */
         body.dark-mode {
             background: #1a1a1a;
             color: #ffffff;
         }
 
-        .dark-mode header,
-        .dark-mode .sidebar-left,
-        .dark-mode .sidebar-right,
+        .dark-mode header, 
+        .dark-mode .sidebar-left, 
+        .dark-mode .sidebar-right, 
         .dark-mode .card {
             background: #252525;
             color: #ffffff;
@@ -201,13 +210,12 @@
 <body>
 
     <header>
-        <button onclick="toggleDarkMode()"
-            style="margin-right: 20px; padding: 8px 15px; cursor: pointer; border-radius: 20px; border: 1px solid var(--uvci-purple); background: transparent; color: var(--uvci-purple); font-weight: bold;">
-            🌙 Mode Nuit
-        </button>
+        <button onclick="toggleDarkMode()" style="margin-right: 20px; padding: 8px 15px; cursor: pointer; border-radius: 20px; border: 1px solid var(--uvci-purple); background: transparent; color: var(--uvci-purple); font-weight: bold;">
+    🌙 Mode Nuit
+</button>
         <div class="header-title">UVCI Connect: <span style="font-weight: normal; color: #555;">Observatoire de la
                 Présence Universitaire</span></div>
-        <img src="IdkpP2Gr.png" class="header-logo">
+        <img src="C:\Users\DELL\Downloads\PROJET_UVCI\PROJET_UVCI\IdkpP2Gr.png" class="header-logo">
     </header>
 
     <div class="main-container">
@@ -278,14 +286,17 @@
                     Frontière Côte d'Ivoire
                 </div>
             </div>
+<div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 10px 0;">
+    <img src="C:\Users\DELL\Downloads\PROJET_UVCI\PROJET_UVCI\carte-3d-cote-ivoire-drapeau-national_97886-6567.avif" 
+         style="width: 90%; max-width: 220px; height: auto; opacity: 0.8; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));">
+</div>
             <div
-                style="flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 20px 0; min-height: 300px;">
-                <img src="carte-3d-cote-ivoire-drapeau-national_97886-6567.avif"
-                    style="width: 100%; max-width: 260px; height: auto; opacity: 1; transition: transform 0.3s ease;">
-
-            </div>
-
-            <div
+                style="padding: 15px; background: #fcfaff; border-radius: 8px; font-size: 13px; color: var(--uvci-purple); border-left: 4px solid var(--uvci-purple);">
+                <strong>Passage de Flambeau</strong><br>
+                <small>Promotion L3 - 2026</small>
+                <p style="font-style: italic; margin-top: 5px; font-size: 11px;">"Bâtir ensemble l'excellence
+                    numérique."</p>
+            </div><div
                 style="padding: 15px; background: #fcfaff; border-radius: 8px; font-size: 13px; color: var(--uvci-purple); border-left: 4px solid var(--uvci-purple);">
                 <strong>Passage de Flambeau</strong><br>
                 <small>Promotion L3 - 2026</small>
@@ -311,7 +322,7 @@
         map.zoomControl.setPosition('topright');
 
         var baseMaps = { "🌍 Mode Plan": osm, "🛰️ Mode Satellite": satellite };
-        L.control.layers(baseMaps, null, { position: 'topleft' }).addTo(map);
+        L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
 
         // FRONTIÈRES
         fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/pays/cote-divoire.json')
@@ -375,6 +386,7 @@
                             ${communeTxt}
                             <b>🗺️ Quartier:</b> ${p.quartier || '-'}
                         </div>
+                
                     </div>`;
 
                     layer.bindPopup(content, { closeButton: false });
@@ -414,19 +426,19 @@
             link.click();
         }
         function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const btn = document.querySelector('header button');
-
-            if (document.body.classList.contains('dark-mode')) {
-                btn.innerHTML = "☀️ Mode Jour";
-                btn.style.color = "#ffcc00";
-                btn.style.borderColor = "#ffcc00";
-            } else {
-                btn.innerHTML = "🌙 Mode Nuit";
-                btn.style.color = "var(--uvci-purple)";
-                btn.style.borderColor = "var(--uvci-purple)";
-            }
-        }
+    document.body.classList.toggle('dark-mode');
+    const btn = document.querySelector('header button');
+    
+    if (document.body.classList.contains('dark-mode')) {
+        btn.innerHTML = "☀️ Mode Jour";
+        btn.style.color = "#ffcc00";
+        btn.style.borderColor = "#ffcc00";
+    } else {
+        btn.innerHTML = "🌙 Mode Nuit";
+        btn.style.color = "var(--uvci-purple)";
+        btn.style.borderColor = "var(--uvci-purple)";
+    }
+}
 
         if (mesDonnees) afficher(mesDonnees);
     </script>
