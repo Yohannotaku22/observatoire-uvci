@@ -53,30 +53,39 @@
         }
 
         /* Quand l'écran est petit (téléphone) */
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column; /* On empile tout verticalement */
-                overflow-y: auto;
-            }
-            
-            .sidebar-left, .sidebar-right {
-                width: 100% !important; /* Prend toute la largeur */
-                border: none;
-                overflow: visible;
-            }
+       @media (max-width: 768px) {
+    /* On empile les colonnes verticalement */
+    .main-container {
+        flex-direction: column !important;
+        overflow-y: auto !important;
+        display: block !important; /* Force l'empilement */
+    }
 
-            #map {
-                height: 400px; /* On donne une hauteur fixe à la carte sur mobile */
-                flex: none;
-                width: 100%;
-            }
-            
-            header {
-                height: auto;
-                padding: 10px;
-                flex-direction: column;
-                text-align: center;
-            }
+    /* On force la carte à avoir une hauteur sur mobile */
+    #map {
+        height: 450px !important; /* Hauteur minimale pour voir la carte */
+        width: 100% !important;
+        order: 2; /* Place la carte après les filtres */
+    }
+
+    .sidebar-left {
+        width: 100% !important;
+        height: auto !important;
+        order: 1; /* Filtres en premier */
+    }
+
+    .sidebar-right {
+        width: 100% !important;
+        height: auto !important;
+        order: 3; /* Légende et carte CI en dernier */
+    }
+
+    header {
+        flex-direction: column !important;
+        height: auto !important;
+        text-align: center;
+    }
+}
 
             .header-logo {
                 margin-top: 10px;
@@ -445,4 +454,5 @@
 
 
 </html>
+
 
