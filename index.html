@@ -53,33 +53,44 @@
         }
 
         /* Quand l'écran est petit (téléphone) */
-       @media (max-width: 768px) {
-    /* On empile les colonnes verticalement */
-    .main-container {
-        flex-direction: column !important;
-        overflow-y: auto !important;
-        display: block !important; /* Force l'empilement */
-    }
+     /* --- CORRECTIONS POUR ORDINATEUR --- */
+        .main-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 70px); /* Fixe la hauteur pour forcer le scroll interne */
+            overflow: hidden;
+        }
 
-    /* On force la carte à avoir une hauteur sur mobile */
-    #map {
-        height: 450px !important; /* Hauteur minimale pour voir la carte */
-        width: 100% !important;
-        order: 2; /* Place la carte après les filtres */
-    }
+        .sidebar-left, .sidebar-right {
+            width: 320px; /* On redonne la largeur d'origine */
+            background: white;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* LA BARRE DE DÉFILEMENT REVIENT ICI */
+            height: 100%;
+        }
 
-    .sidebar-left {
-        width: 100% !important;
-        height: auto !important;
-        order: 1; /* Filtres en premier */
-    }
+        /* --- AJUSTEMENT MOBILE SÉCURISÉ --- */
+        @media (max-width: 768px) {
+            .main-container {
+                display: block !important;
+                height: auto !important;
+                overflow-y: visible !important;
+            }
+            
+            .sidebar-left, .sidebar-right {
+                width: 100% !important;
+                height: auto !important;
+                overflow-y: visible !important;
+                padding: 15px; /* Padding réduit uniquement sur mobile */
+            }
 
-    .sidebar-right {
-        width: 100% !important;
-        height: auto !important;
-        order: 3; /* Légende et carte CI en dernier */
-    }
-
+            #map {
+                height: 450px !important;
+                width: 100% !important;
+            }
+        }
     header {
         flex-direction: column !important;
         height: auto !important;
@@ -454,5 +465,6 @@
 
 
 </html>
+
 
 
