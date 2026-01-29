@@ -49,8 +49,19 @@
             display: flex;
             flex: 1;
             overflow: hidden;
-            flex-direction: row; /* Par défaut : côte à côte */
         }
+
+        /* SIDEBAR GAUCHE */
+        .sidebar-left {
+            width: 320px;
+            background: white;
+            border-right: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
 
         /* Quand l'écran est petit (téléphone) */
      /* --- CORRECTIONS POUR ORDINATEUR --- */
@@ -91,11 +102,7 @@
                 width: 100% !important;
             }
         }
-    header {
-        flex-direction: column !important;
-        height: auto !important;
-        text-align: center;
-    }
+  
 }
 
             .header-logo {
@@ -465,6 +472,7 @@
 
 
 </html>
+
 
 
 
