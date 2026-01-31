@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <title>UVCI Connect - Observatoire de la Présence Universitaire</title>
+    <title>UVCI Connecte - Observatoire de la Présence Universitaire</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -163,22 +164,44 @@
         }
 
         /* DARK MODE */
-        body.dark-mode { background: #1a1a1a; color: #ffffff; }
-        .dark-mode header, .dark-mode .sidebar-left, .dark-mode .sidebar-right, .dark-mode .card {
-            background: #252525; color: #ffffff; border-color: #333;
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #ffffff;
         }
-        .dark-mode .header-title span { color: #bbb !important; }
-        .dark-mode .btn-export { background: #333; color: #eee; border-color: #444; }
-        .dark-mode .leaflet-tile-container { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }
+
+        .dark-mode header,
+        .dark-mode .sidebar-left,
+        .dark-mode .sidebar-right,
+        .dark-mode .card {
+            background: #252525;
+            color: #ffffff;
+            border-color: #333;
+        }
+
+        .dark-mode .header-title span {
+            color: #bbb !important;
+        }
+
+        .dark-mode .btn-export {
+            background: #333;
+            color: #eee;
+            border-color: #444;
+        }
+
+        .dark-mode .leaflet-tile-container {
+            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <button onclick="toggleDarkMode()" id="modeBtn" style="margin-right: 20px; padding: 8px 15px; cursor: pointer; border-radius: 20px; border: 1px solid var(--uvci-purple); background: transparent; color: var(--uvci-purple); font-weight: bold;">
+        <button onclick="toggleDarkMode()" id="modeBtn"
+            style="margin-right: 20px; padding: 8px 15px; cursor: pointer; border-radius: 20px; border: 1px solid var(--uvci-purple); background: transparent; color: var(--uvci-purple); font-weight: bold;">
             🌙 Mode Nuit
         </button>
-        <div class="header-title">UVCI Connect: <span style="font-weight: normal; color: #555;">Observatoire de la Présence Universitaire</span></div>
+        <div class="header-title">UVCI Connect: <span style="font-weight: normal; color: #555;">Observatoire de la
+                Présence Universitaire</span></div>
         <img src="IdkpP2Gr.png" class="header-logo" alt="Logo">
     </header>
 
@@ -192,7 +215,8 @@
 
             <div class="card">
                 <h3>🔍 Recherche</h3>
-                <input type="text" id="search" placeholder="Nom ou ville..." style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;" onkeyup="filtrer()">
+                <input type="text" id="search" placeholder="Nom ou ville..."
+                    style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;" onkeyup="filtrer()">
             </div>
 
             <div class="card">
@@ -229,27 +253,35 @@
         <div class="sidebar-right">
             <div>
                 <h3>Légende</h3>
-                <div class="legend-item"><div class="legend-icon" style="background: var(--uvci-green);"></div> Communauté en vert</div>
-                <div class="legend-item"><div class="legend-icon" style="background: var(--uvci-purple);"></div> Etudiants en violet</div>
-                
-                <div style="text-align:center; padding: 20px 0;">
-                    <img src="carte-3d-cote-ivoire-drapeau-national_97886-6567.avif" style="width: 100%; max-width: 220px; border-radius:10px;">
-                </div>
-
                 <div class="legend-item">
-                    <div class="legend-icon" style="display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-graduation-cap" style="color: #444; font-size: 14px;"></i></div> 
+                    <div class="legend-icon" style="background: var(--uvci-green);"></div> Communauté en vert
+                </div>
+                <div class="legend-item">
+                    <div class="legend-icon" style="background: var(--uvci-purple);"></div> Etudiants en violet
+                </div>
+                <div class="legend-item">
+                    <div class="legend-icon" style="display: flex; align-items: center; justify-content: center;"><i
+                            class="fa-solid fa-graduation-cap" style="color: #444; font-size: 14px;"></i></div>
                     Siège de l'UVCI
                 </div>
                 <div class="legend-item">
-                    <div class="legend-icon" style="border: 2px solid #000; border-radius: 0; background: none; height: 10px; width:14px;"></div> 
+                    <div class="legend-icon"
+                        style="border: 2px solid #000; border-radius: 0; background: none; height: 10px; width:14px;">
+                    </div>
                     Frontière Côte d'Ivoire
+                </div>
+                <div style="text-align:center; padding: 20px 0;">
+                    <img src="carte-3d-cote-ivoire-drapeau-national_97886-6567.avif"
+                        style="width: 100%; max-width: 220px; border-radius:10px;">
                 </div>
             </div>
 
-            <div style="padding: 15px; background: #fcfaff; border-radius: 8px; font-size: 13px; color: var(--uvci-purple); border-left: 4px solid var(--uvci-purple);">
+            <div
+                style="padding: 15px; background: #fcfaff; border-radius: 8px; font-size: 13px; color: var(--uvci-purple); border-left: 4px solid var(--uvci-purple);">
                 <strong>Passage de Flambeau</strong><br>
                 <small>Promotion L3 - 2026</small>
-                <p style="font-style: italic; margin-top: 5px; font-size: 11px;">"Bâtir ensemble l'excellence numérique."</p>
+                <p style="font-style: italic; margin-top: 5px; font-size: 11px;">"Bâtir ensemble l'excellence
+                    numérique."</p>
             </div>
         </div>
     </div>
@@ -308,16 +340,16 @@
                         <div class="popup-info">
                             <b>🎓 Niveau:</b> ${p.niveau || '-'}<br>
                             <b>📚 Spécialité:</b> ${p.specialite || '-'}<br>
-                            <b>📧 Email:</b> <a href="mailto:${p.email}" style="color:var(--uvci-purple); font-weight:bold; text-decoration:none;">${p.email || '-'}</a><br>
+                            <b>📧 Email:</b> <span style="color:var(--uvci-purple)">${p.email || '-'}</span><br>
                             <b>📍 Ville:</b> ${villeTxt}<br>
                             ${communeTxt}
                             <b>🗺️ Quartier:</b> ${p.quartier || '-'}
                         </div>
                     </div>`;
                     layer.bindPopup(content, { closeButton: false });
-                    layer.on("mouseover", function () { this.setIcon(iconSel); this.openPopup(); });
-                    layer.on("click", function () { this.setIcon(iconSel); this.openPopup(); });
-                    layer.on('mouseout', function () { this.setIcon(iconNorm); });
+                    layer.on('mouseover', function () { this.setIcon(iconSel); this.openPopup(); });
+                    layer.on('mouseout', function () { this.setIcon(iconNorm); this.closePopup(); });
+                }
             }).addTo(map);
         }
 
@@ -364,7 +396,5 @@
         afficher(mesDonnees);
     </script>
 </body>
+
 </html>
-
-
-
