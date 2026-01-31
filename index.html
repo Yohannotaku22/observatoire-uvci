@@ -308,7 +308,7 @@
                         <div class="popup-info">
                             <b>🎓 Niveau:</b> ${p.niveau || '-'}<br>
                             <b>📚 Spécialité:</b> ${p.specialite || '-'}<br>
-                            <b>📧 Email:</b> <span style="color:var(--uvci-purple)">${p.email || '-'}</span><br>
+                           <b>📧 Email:</b> <a href="mailto:${p.email}" style="color:var(--uvci-purple); font-weight:bold; text-decoration:none;">${p.email || '-'}</a><br>
                             <b>📍 Ville:</b> ${villeTxt}<br>
                             ${communeTxt}
                             <b>🗺️ Quartier:</b> ${p.quartier || '-'}
@@ -316,8 +316,8 @@
                     </div>`;
                     layer.bindPopup(content, { closeButton: false });
                     layer.on('mouseover', function () { this.setIcon(iconSel); this.openPopup(); });
-                    layer.on('mouseout', function () { this.setIcon(iconNorm); this.closePopup(); });
-                }
+                    layer.on('click', function () { this.setIcon(iconSel); this.openPopup(); });
+                    layer.on('mouseout', function () { this.setIcon(iconNorm); });
             }).addTo(map);
         }
 
@@ -365,3 +365,4 @@
     </script>
 </body>
 </html>
+
