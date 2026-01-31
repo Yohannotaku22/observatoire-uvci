@@ -347,9 +347,14 @@
                         </div>
                     </div>`;
                     layer.bindPopup(content, { closeButton: false });
-                    layer.on('mouseover', function () { this.setIcon(iconSel); this.openPopup(); });
-                    layer.on('click', function () { this.setIcon(iconSel); this.openPopup(); });
-                   
+                    layer.bindPopup(content, { closeButton: true }); // Active la croix de fermeture
+
+                    layer.on('mouseover', function () { this.setIcon(iconSel); this.openPopup(); }); // Survol : ouvre
+
+                    layer.on('click', function () { this.openPopup(); }); // Clic : ouvre et reste fixé
+
+                    layer.on('mouseout', function () { this.setIcon(iconNorm); }); // Quitter : change l'icône mais NE FERME PLUS (pour pouvoir cliquer)
+
                 }
             }).addTo(map);
         }
@@ -399,5 +404,6 @@
 </body>
 
 </html>
+
 
 
