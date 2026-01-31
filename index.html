@@ -315,8 +315,8 @@
                         </div>
                     </div>`;
                     layer.bindPopup(content, { closeButton: false });
-                    layer.on('mouseover', function () { this.setIcon(iconSel); this.openPopup(); });
-                    layer.on('click', function () { this.setIcon(iconSel); this.openPopup(); });
+                    layer.on("mouseover", function () { this.setIcon(iconSel); this.openPopup(); });
+                    layer.on("click", function () { this.setIcon(iconSel); this.openPopup(); });
                     layer.on('mouseout', function () { this.setIcon(iconNorm); });
             }).addTo(map);
         }
@@ -365,5 +365,6 @@
     </script>
 </body>
 </html>
+
 
 
